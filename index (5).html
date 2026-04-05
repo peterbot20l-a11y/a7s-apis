@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A7S Tier Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0e0f17;
+  --bg2:    #141620;
+  --bg3:    #1c1f30;
+  --bg4:    #242840;
+  --border: rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --text:   #eceef8;
+  --muted:  #454d6e;
+  --muted2: #7b85b0;
+  --gold:   #f5a623;
+  --gold2:  #ffcc70;
+  --silver: #a0aec0;
+  --bronze: #c87941;
+  --disc:   #5865F2;
+  --disc2:  #7289da;
+  --red:    #ef4444;
+  --green:  #4ade80;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Nunito',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 10% -10%, rgba(88,101,242,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 110%, rgba(245,166,35,0.06) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+a{text-decoration:none;color:inherit;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px) scale(0.97)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes popIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes glow{0%,100%{box-shadow:0 0 12px rgba(245,166,35,0.2)}50%{box-shadow:0 0 24px rgba(245,166,35,0.45)}}
+@keyframes rowIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+
+/* NAV */
+.topnav{
+  background:rgba(14,15,23,0.95);
+  border-bottom:1px solid var(--border);
+  height:60px;display:flex;align-items:center;
+  padding:0 1.5rem;gap:0.9rem;
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+.logo{display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+.logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#1e2035,#2a2d4a);border:1px solid rgba(245,166,35,0.3);display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(245,166,35,0.12);}
+.logo-text{font-family:'Fredoka One',cursive;font-size:1.35rem;letter-spacing:0.5px;background:linear-gradient(135deg,#f5a623,#ffcc70);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-sub{color:var(--muted2);font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-left:-2px;}
+
+.nav-links{display:flex;align-items:center;gap:0.15rem;margin-left:0.25rem;}
+.nav-links a{display:flex;align-items:center;gap:0.4rem;padding:0.4rem 0.8rem;border-radius:10px;color:var(--muted2);font-size:0.8rem;font-weight:700;transition:all 0.2s;cursor:pointer;letter-spacing:0.2px;}
+.nav-links a:hover,.nav-links a.active{background:var(--bg3);color:var(--text);}
+.nav-links a svg{width:14px;height:14px;flex-shrink:0;}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:0.55rem;}
+
+.nav-pill{display:flex;align-items:center;gap:0.4rem;border-radius:10px;padding:0.4rem 0.85rem;font-size:0.78rem;font-weight:800;cursor:pointer;transition:all 0.2s;border:1.5px solid;white-space:nowrap;font-family:'Nunito',sans-serif;}
+.nav-pill svg{width:13px;height:13px;}
+.pill-info{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.25);color:var(--gold);}
+.pill-info:hover{background:rgba(245,166,35,0.15);border-color:rgba(245,166,35,0.5);transform:translateY(-1px);}
+.pill-admin{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.25);color:var(--red);display:none;}
+.pill-admin:hover{background:rgba(239,68,68,0.15);transform:translateY(-1px);}
+.pill-admin.vis{display:flex;}
+
+.nav-search{display:flex;align-items:center;background:var(--bg3);border:1.5px solid var(--border2);border-radius:10px;padding:0.38rem 0.85rem;gap:0.45rem;width:195px;transition:all 0.2s;}
+.nav-search:focus-within{border-color:rgba(88,101,242,0.4);box-shadow:0 0 0 3px rgba(88,101,242,0.08);}
+.nav-search input{background:none;border:none;outline:none;color:var(--text);font-size:0.8rem;width:100%;font-family:'Nunito',sans-serif;font-weight:600;}
+.nav-search input::placeholder{color:var(--muted);}
+
+.sign-btn{display:flex;align-items:center;gap:0.45rem;background:linear-gradient(135deg,rgba(88,101,242,0.15),rgba(88,101,242,0.08));border:1.5px solid rgba(88,101,242,0.35);border-radius:10px;padding:0.4rem 0.9rem;font-size:0.8rem;color:var(--disc2);cursor:pointer;font-weight:800;transition:all 0.2s;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.sign-btn:hover{background:linear-gradient(135deg,rgba(88,101,242,0.25),rgba(88,101,242,0.15));transform:translateY(-1px);box-shadow:0 4px 16px rgba(88,101,242,0.2);}
+.sign-btn svg{width:15px;height:15px;}
+
+.user-chip{display:flex;align-items:center;gap:0.5rem;background:var(--bg3);border:1.5px solid var(--border2);border-radius:10px;padding:0.32rem 0.75rem;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.user-chip:hover{background:var(--bg4);border-color:var(--border2);}
+.user-avatar{width:24px;height:24px;border-radius:6px;object-fit:cover;image-rendering:pixelated;background:var(--bg4);}
+.tag-admin{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:var(--red);font-size:0.58rem;font-weight:900;padding:1px 6px;border-radius:5px;letter-spacing:0.5px;}
+
+/* MAIN */
+.main{max-width:1320px;margin:0 auto;padding:2rem 1.5rem;}
+
+/* TABS */
+.tabs-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;margin-bottom:1.5rem;overflow:hidden;}
+.gm-tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);}
+.gm-tabs::-webkit-scrollbar{display:none;}
+.gm-tab{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.85rem 1.3rem;
+  cursor:pointer;transition:all 0.2s;
+  border:none;background:none;
+  color:var(--muted2);
+  font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.8px;
+  white-space:nowrap;
+  border-bottom:2.5px solid transparent;
+  position:relative;top:1px;
+}
+.gm-tab .tab-em{font-size:1.1rem;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+.gm-tab:hover{color:var(--text);background:rgba(255,255,255,0.025);}
+.gm-tab:hover .tab-em{transform:scale(1.25) rotate(-5deg);}
+.gm-tab.active{color:var(--text);}
+.gm-tab.active .tab-em{transform:scale(1.2);}
+.gm-tab.active[data-gm="Overall"]{border-bottom-color:#f5a623;}
+.gm-tab.active[data-gm="Cpvp"]{border-bottom-color:#4ade80;}
+.gm-tab.active[data-gm="Mace"]{border-bottom-color:#a855f7;}
+.gm-tab.active[data-gm="Sword"]{border-bottom-color:#3b82f6;}
+.gm-tab.active[data-gm="Diamond SMP"]{border-bottom-color:#06b6d4;}
+.gm-tab.active[data-gm="UHC"]{border-bottom-color:#ef4444;}
+.gm-tab.active[data-gm="NethOP"]{border-bottom-color:#22c55e;}
+.gm-tab.active[data-gm="Pot"]{border-bottom-color:#f97316;}
+.gm-tab.active[data-gm="Cart"]{border-bottom-color:#e87900;}
+
+.tab-bar-bottom{display:flex;align-items:center;justify-content:space-between;padding:0.65rem 1.1rem;}
+.tab-bar-bottom .left{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;color:var(--muted2);font-weight:700;}
+.tab-bar-bottom .left span{color:var(--gold);font-weight:900;}
+.disc-join{display:flex;align-items:center;gap:0.4rem;background:rgba(88,101,242,0.1);border:1.5px solid rgba(88,101,242,0.22);border-radius:8px;padding:0.3rem 0.75rem;font-size:0.74rem;color:var(--disc2);font-weight:800;transition:all 0.2s;cursor:pointer;}
+.disc-join:hover{background:rgba(88,101,242,0.2);transform:translateY(-1px);}
+.disc-join svg{width:13px;height:13px;}
+
+/* TABLE */
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-table thead tr{border-bottom:1px solid var(--border);}
+.lb-table thead th{text-align:left;padding:0.6rem 1rem;font-size:0.6rem;font-weight:900;text-transform:uppercase;letter-spacing:1.8px;color:var(--muted);}
+.lb-table thead th.right{text-align:right;}
+.lb-table tbody tr{
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  transition:background 0.15s,transform 0.15s;
+  cursor:pointer;
+  animation:rowIn 0.3s ease both;
+}
+.lb-table tbody tr:hover{background:rgba(255,255,255,0.03);}
+.lb-table tbody td{padding:0;height:76px;vertical-align:middle;}
+
+.rank-cell{width:64px;text-align:center;}
+.rank-num{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;font-size:1rem;font-weight:900;color:var(--muted2);background:var(--bg3);}
+.rank-1-row{background:linear-gradient(90deg,rgba(245,166,35,0.06) 0%,transparent 60%);}
+.rank-2-row{background:linear-gradient(90deg,rgba(160,174,192,0.045) 0%,transparent 60%);}
+.rank-3-row{background:linear-gradient(90deg,rgba(200,121,65,0.045) 0%,transparent 60%);}
+.rank-1-row:hover{background:linear-gradient(90deg,rgba(245,166,35,0.11) 0%,transparent 70%)!important;}
+.rank-2-row:hover{background:linear-gradient(90deg,rgba(160,174,192,0.09) 0%,transparent 70%)!important;}
+.rank-3-row:hover{background:linear-gradient(90deg,rgba(200,121,65,0.09) 0%,transparent 70%)!important;}
+.rank-1-row .rank-num{background:linear-gradient(135deg,#3d2800,rgba(245,166,35,0.2));color:var(--gold);border:1px solid rgba(245,166,35,0.35);animation:glow 2.5s ease-in-out infinite;}
+.rank-2-row .rank-num{background:linear-gradient(135deg,#1a2535,rgba(160,174,192,0.15));color:var(--silver);border:1px solid rgba(160,174,192,0.3);}
+.rank-3-row .rank-num{background:linear-gradient(135deg,#2a1500,rgba(200,121,65,0.15));color:var(--bronze);border:1px solid rgba(200,121,65,0.3);}
+
+.player-td{padding:0 1rem!important;}
+.player-cell{display:flex;align-items:center;gap:0.9rem;}
+.skin-lg{position:relative;flex-shrink:0;width:52px;height:66px;border-radius:12px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+.rank-1-row .skin-lg{background:linear-gradient(160deg,#3d2800,rgba(245,166,35,0.12));border:1px solid rgba(245,166,35,0.25);}
+.rank-2-row .skin-lg{background:linear-gradient(160deg,#1a2535,rgba(160,174,192,0.12));border:1px solid rgba(160,174,192,0.22);}
+.rank-3-row .skin-lg{background:linear-gradient(160deg,#2a1500,rgba(200,121,65,0.12));border:1px solid rgba(200,121,65,0.22);}
+.skin-body{width:36px;height:62px;object-fit:cover;image-rendering:pixelated;}
+.skin-sm{flex-shrink:0;width:40px;height:40px;background:var(--bg3);border:1.5px solid var(--border2);border-radius:10px;overflow:hidden;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+.skin-av{width:100%;height:100%;object-fit:cover;image-rendering:pixelated;}
+.lb-table tbody tr:hover .skin-lg,.lb-table tbody tr:hover .skin-sm{transform:scale(1.1) translateY(-3px);}
+.player-info{display:flex;flex-direction:column;gap:0.18rem;}
+.player-ign{font-size:0.97rem;font-weight:900;color:var(--text);display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;transition:color 0.15s;}
+.lb-table tbody tr:hover .player-ign{color:#fff;}
+.restricted-badge{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.28);color:var(--red);font-size:0.57rem;font-weight:900;padding:1px 5px;border-radius:5px;letter-spacing:0.5px;text-transform:uppercase;}
+.player-pts{display:flex;align-items:center;gap:0.3rem;font-size:0.72rem;color:var(--muted2);font-weight:700;}
+.region-td{padding:0 1rem!important;width:86px;}
+.region-badge{display:inline-flex;align-items:center;justify-content:center;padding:0.22rem 0.6rem;border-radius:7px;font-size:0.67rem;font-weight:800;letter-spacing:0.8px;}
+.r-na{background:rgba(127,29,29,0.35);color:#fca5a5;border:1px solid rgba(127,29,29,0.7);}
+.r-eu{background:rgba(30,58,95,0.35);color:#93c5fd;border:1px solid rgba(30,58,95,0.7);}
+.r-as{background:rgba(20,83,45,0.35);color:#86efac;border:1px solid rgba(20,83,45,0.7);}
+.r-sa{background:rgba(59,31,94,0.35);color:#c4b5fd;border:1px solid rgba(59,31,94,0.7);}
+
+.tiers-td{text-align:right;padding:0 1rem!important;}
+.tier-icons{display:flex;gap:0.3rem;justify-content:flex-end;align-items:center;flex-wrap:nowrap;}
+.tier-chip{
+  display:flex;align-items:center;gap:0.28rem;
+  padding:0.28rem 0.5rem;border-radius:8px;
+  font-size:0.72rem;font-weight:900;
+  border:1.5px solid;
+  transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  white-space:nowrap;
+}
+.tier-chip:hover{transform:scale(1.12) translateY(-2px);}
+.tier-chip.empty{opacity:0.12;}
+.tier-chip .te{font-size:0.85rem;}
+.tc-cpvp{background:rgba(74,222,128,0.07);border-color:rgba(74,222,128,0.3);color:#4ade80;}
+.tc-mace{background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,0.3);color:#a855f7;}
+.tc-sword{background:rgba(59,130,246,0.07);border-color:rgba(59,130,246,0.3);color:#3b82f6;}
+.tc-smp{background:rgba(6,182,212,0.07);border-color:rgba(6,182,212,0.3);color:#06b6d4;}
+.tc-uhc{background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.3);color:#ef4444;}
+.tc-nethop{background:rgba(34,197,94,0.07);border-color:rgba(34,197,94,0.3);color:#22c55e;}
+.tc-pot{background:rgba(249,115,22,0.07);border-color:rgba(249,115,22,0.3);color:#f97316;}
+.tc-cart{background:rgba(232,121,0,0.07);border-color:rgba(232,121,0,0.3);color:#e87900;}
+.ht{color:#f5a623!important;}
+.lt{color:var(--disc2)!important;}
+
+/* OVERLAYS */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:200;align-items:center;justify-content:center;padding:1rem;}
+.ov.open{display:flex;}
+#adminOverlay{z-index:300;}
+#loginOverlay{z-index:400;}
+
+/* MODALS */
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:620px;animation:fadeUp 0.25s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;max-height:92vh;overflow-y:auto;}
+.modal-header{padding:1.6rem;display:flex;gap:1.1rem;align-items:flex-start;position:relative;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(245,166,35,0.05),rgba(88,101,242,0.03),transparent);}
+.modal-skin-wrap{width:76px;height:96px;border-radius:14px;overflow:hidden;flex-shrink:0;display:flex;align-items:flex-end;justify-content:center;background:var(--bg3);border:1px solid var(--border2);}
+.modal-skin{width:56px;height:92px;object-fit:cover;image-rendering:pixelated;}
+.modal-info{flex:1;min-width:0;}
+.modal-ign{font-size:1.5rem;font-weight:900;margin-bottom:0.15rem;display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap;}
+.modal-sub{font-size:0.77rem;color:var(--muted2);margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;font-weight:700;}
+.mc{position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border2);color:var(--muted2);border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.mc:hover{background:rgba(239,68,68,0.12);color:var(--red);border-color:rgba(239,68,68,0.28);}
+.modal-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;padding:1rem;border-bottom:1px solid var(--border);}
+.msc{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:0.85rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:transform 0.2s;}
+.msc:hover{transform:translateY(-2px);}
+.msc-icon{font-size:1.05rem;}
+.msc-val{font-size:1.4rem;font-weight:900;line-height:1;}
+.msc-lbl{font-size:0.57rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:800;}
+.mwl{display:flex;gap:0.22rem;align-items:center;font-size:1.05rem;font-weight:900;}
+.mwl .w{color:#4ade80;}.mwl .sep{color:var(--muted);font-size:0.8rem;}.mwl .l{color:#ef4444;}
+.cg{color:#f5a623;}.cc{color:#06b6d4;}.cgr{color:#4ade80;}.cp{color:#a855f7;}.cb{color:#3b82f6;}
+.msec{padding:1.1rem;border-bottom:1px solid var(--border);}
+.msec:last-child{border:none;}
+.stitle{font-size:0.57rem;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:0.8rem;font-weight:900;}
+.mtg{display:flex;gap:0.4rem;flex-wrap:wrap;}
+.mtc{display:flex;flex-direction:column;align-items:center;gap:0.3rem;background:var(--bg3);border:1px solid var(--border2);border-radius:11px;padding:0.6rem 0.8rem;min-width:74px;transition:all 0.2s;cursor:default;}
+.mtc:hover{background:rgba(255,255,255,0.04);transform:translateY(-3px);}
+.mtc-icon{font-size:0.95rem;}.mtc-gm{font-size:0.55rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:0.5px;}
+.mtc-tier{font-size:1rem;font-weight:900;}.mtc-tier.ht{color:#f5a623;}.mtc-tier.lt{color:var(--disc2);}
+.hr{display:flex;align-items:center;justify-content:space-between;padding:0.42rem 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.78rem;gap:0.5rem;}
+.hr:last-child{border:none;}
+.hr-gm{color:var(--muted2);font-size:0.73rem;display:flex;align-items:center;gap:0.3rem;flex:1;font-weight:700;}
+.hr-date{color:var(--muted);font-size:0.65rem;white-space:nowrap;font-weight:600;}
+.hr-tester{color:var(--muted);font-size:0.67rem;white-space:nowrap;font-weight:600;}
+.tbadge{display:inline-block;padding:0.15rem 0.48rem;border-radius:5px;font-size:0.67rem;font-weight:800;white-space:nowrap;}
+.tb-ht{background:rgba(245,166,35,0.14);color:#f5a623;border:1px solid rgba(245,166,35,0.28);}
+.tb-lt{background:rgba(114,137,218,0.14);color:var(--disc2);border:1px solid rgba(114,137,218,0.28);}
+.madded{text-align:center;padding:0.7rem;font-size:0.67rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:0.35rem;font-weight:700;}
+.modal-admin-bar{padding:0.8rem 1.1rem;border-top:1px solid var(--border);background:rgba(239,68,68,0.03);display:none;flex-wrap:wrap;gap:0.45rem;align-items:center;}
+.modal-admin-bar.vis{display:flex;}
+.modal-admin-bar .stitle{margin-bottom:0;flex-basis:100%;}
+.apill{display:flex;align-items:center;gap:0.35rem;padding:0.38rem 0.8rem;border-radius:8px;font-size:0.73rem;font-weight:800;cursor:pointer;transition:all 0.15s;border:1.5px solid;background:none;font-family:'Nunito',sans-serif;}
+.apill svg{width:12px;height:12px;}
+.apill.red{color:var(--red);border-color:rgba(239,68,68,0.3);}.apill.red:hover{background:rgba(239,68,68,0.12);}
+.apill.green{color:var(--green);border-color:rgba(74,222,128,0.3);}.apill.green:hover{background:rgba(74,222,128,0.1);}
+.apill.blue{color:var(--disc2);border-color:rgba(114,137,218,0.3);}.apill.blue:hover{background:rgba(114,137,218,0.1);}
+
+/* INFO MODAL */
+.info-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:480px;animation:fadeUp 0.25s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;}
+.imh{padding:1.3rem 1.5rem;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(245,166,35,0.07),transparent);display:flex;align-items:center;justify-content:space-between;}
+.imt{font-size:0.97rem;font-weight:900;display:flex;align-items:center;gap:0.45rem;}
+.imb{padding:1.2rem;display:flex;flex-direction:column;gap:0.85rem;max-height:75vh;overflow-y:auto;}
+.tier-block{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:0.8rem 1rem;}
+.tbt{font-size:0.59rem;text-transform:uppercase;letter-spacing:1.8px;color:var(--muted);font-weight:900;margin-bottom:0.6rem;}
+.trow{display:flex;align-items:center;padding:0.36rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.trow:last-of-type{border:none;}
+.trn{font-weight:900;font-size:0.83rem;width:44px;}
+.trn.ht{color:#f5a623;}.trn.lt{color:var(--disc2);}
+.tra{color:var(--muted);font-size:0.75rem;margin:0 0.5rem;}
+.trp{font-size:0.8rem;font-weight:800;color:var(--muted2);}
+.tbd{font-size:0.71rem;color:var(--muted2);margin-top:0.5rem;font-style:italic;}
+
+/* LOGIN MODAL — Discord only */
+.login-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:380px;animation:fadeUp 0.25s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;}
+.lh{padding:2rem 1.7rem 1.5rem;text-align:center;border-bottom:1px solid var(--border);background:linear-gradient(160deg,rgba(88,101,242,0.1),transparent 70%);}
+.lh-icon{width:60px;height:60px;border-radius:18px;background:linear-gradient(135deg,rgba(88,101,242,0.2),rgba(88,101,242,0.1));border:2px solid rgba(88,101,242,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
+.lh-icon svg{width:30px;height:30px;color:var(--disc2);}
+.ltitle{font-size:1.2rem;font-weight:900;margin-bottom:0.3rem;}
+.lsub{font-size:0.78rem;color:var(--muted2);font-weight:600;line-height:1.5;}
+.lb{padding:1.5rem 1.5rem 0.5rem;}
+.lerr{background:rgba(239,68,68,0.09);border:1.5px solid rgba(239,68,68,0.22);border-radius:10px;padding:0.6rem 0.9rem;font-size:0.76rem;color:#fca5a5;display:none;margin-bottom:0.9rem;font-weight:700;}
+.ldbtn{display:flex;align-items:center;justify-content:center;gap:0.55rem;background:linear-gradient(135deg,#5865F2,#4752c4);color:#fff;border:none;border-radius:12px;padding:0.88rem;font-size:0.9rem;font-weight:900;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;width:100%;box-shadow:0 4px 20px rgba(88,101,242,0.3);}
+.ldbtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(88,101,242,0.45);}
+.ldbtn svg{width:20px;height:20px;}
+.lnote{font-size:0.71rem;color:var(--muted2);text-align:center;padding:1rem 1.5rem 1.2rem;line-height:1.55;font-weight:600;}
+.lcancel{display:block;text-align:center;padding:0.9rem;font-size:0.73rem;color:var(--muted);cursor:pointer;transition:color 0.15s;border-top:1px solid var(--border);font-weight:700;}
+.lcancel:hover{color:var(--text);}
+
+/* DISCORD LOGIN CONFIRM MODAL — simulates OAuth callback */
+.disc-confirm{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:380px;animation:popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;}
+.dc-head{padding:1.5rem;text-align:center;border-bottom:1px solid var(--border);background:linear-gradient(160deg,rgba(88,101,242,0.1),transparent);}
+.dc-title{font-size:1rem;font-weight:900;margin-bottom:0.4rem;}
+.dc-sub{font-size:0.77rem;color:var(--muted2);font-weight:600;}
+.dc-body{padding:1.3rem;display:flex;flex-direction:column;gap:0.7rem;}
+.dc-field label{display:block;font-size:0.65rem;color:var(--muted2);font-weight:900;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:0.32rem;}
+.dc-field input{width:100%;background:var(--bg3);border:1.5px solid var(--border2);border-radius:10px;padding:0.62rem 0.9rem;color:var(--text);font-size:0.85rem;outline:none;font-family:'Nunito',sans-serif;font-weight:700;transition:border 0.15s;}
+.dc-field input:focus{border-color:rgba(88,101,242,0.5);box-shadow:0 0 0 3px rgba(88,101,242,0.1);}
+.dc-note{font-size:0.72rem;color:var(--muted2);font-weight:600;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.55rem 0.75rem;line-height:1.5;}
+.dc-note b{color:var(--disc2);}
+.dc-submit{background:linear-gradient(135deg,#5865F2,#4752c4);color:#fff;border:none;border-radius:10px;padding:0.82rem;font-size:0.88rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;transition:all 0.2s;box-shadow:0 4px 16px rgba(88,101,242,0.25);}
+.dc-submit:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(88,101,242,0.4);}
+.dc-err{background:rgba(239,68,68,0.09);border:1.5px solid rgba(239,68,68,0.22);border-radius:8px;padding:0.55rem 0.8rem;font-size:0.75rem;color:#fca5a5;display:none;font-weight:700;}
+
+/* ADMIN PANEL */
+.admin-modal{background:var(--bg2);border:1px solid rgba(239,68,68,0.2);border-radius:20px;width:100%;max-width:600px;animation:fadeUp 0.25s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden;max-height:90vh;overflow-y:auto;}
+.adh{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(239,68,68,0.07),transparent);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);}
+.adt{font-size:1rem;font-weight:900;color:var(--red);display:flex;align-items:center;gap:0.45rem;}
+.adt svg{width:15px;height:15px;}
+.adt span{color:var(--muted2);font-size:0.67rem;font-weight:600;}
+.adbody{padding:1.2rem;display:flex;flex-direction:column;gap:0.85rem;}
+.adsec{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1rem;}
+.adst{font-size:0.59rem;text-transform:uppercase;letter-spacing:1.8px;color:var(--muted);font-weight:900;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.4rem;}
+.adst svg{width:11px;height:11px;}
+.af label{display:block;font-size:0.65rem;color:var(--muted2);font-weight:800;margin-bottom:0.28rem;text-transform:uppercase;letter-spacing:0.5px;}
+.af input,.af select{width:100%;background:var(--bg2);border:1.5px solid var(--border2);border-radius:8px;padding:0.52rem 0.75rem;color:var(--text);font-size:0.8rem;outline:none;font-family:'Nunito',sans-serif;font-weight:700;transition:all 0.15s;}
+.af input:focus,.af select:focus{border-color:rgba(239,68,68,0.4);box-shadow:0 0 0 3px rgba(239,68,68,0.08);}
+.af select option{background:var(--bg2);}
+.ar2{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;}
+.ar3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.55rem;}
+.abtn{display:inline-flex;align-items:center;justify-content:center;gap:0.35rem;padding:0.5rem 0.9rem;border-radius:9px;font-size:0.76rem;font-weight:800;cursor:pointer;border:1.5px solid;transition:all 0.15s;background:none;font-family:'Nunito',sans-serif;}
+.abtn svg{width:12px;height:12px;}
+.abtn.red{color:var(--red);border-color:rgba(239,68,68,0.28);}.abtn.red:hover{background:rgba(239,68,68,0.1);transform:translateY(-1px);}
+.abtn.green{color:var(--green);border-color:rgba(74,222,128,0.28);}.abtn.green:hover{background:rgba(74,222,128,0.08);transform:translateY(-1px);}
+.abtn.gold{color:var(--gold);border-color:rgba(245,166,35,0.28);}.abtn.gold:hover{background:rgba(245,166,35,0.08);transform:translateY(-1px);}
+.abtn.blue{color:var(--disc2);border-color:rgba(114,137,218,0.28);}.abtn.blue:hover{background:rgba(114,137,218,0.08);transform:translateY(-1px);}
+.abtn.disc{color:#fff;border-color:var(--disc);background:var(--disc);}.abtn.disc:hover{background:#4752c4;transform:translateY(-1px);}
+.afb{padding:0.42rem 0.7rem;border-radius:8px;font-size:0.73rem;font-weight:800;display:none;margin-top:0.42rem;}
+.afb.ok{background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.22);color:var(--green);}
+.afb.err{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.22);color:var(--red);}
+.apl{display:flex;flex-direction:column;gap:0.32rem;max-height:220px;overflow-y:auto;}
+.api{display:flex;align-items:center;gap:0.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:0.4rem 0.65rem;transition:background 0.15s;}
+.api:hover{background:var(--bg4);}
+.api-av{width:22px;height:22px;border-radius:5px;object-fit:cover;image-rendering:pixelated;background:var(--bg4);flex-shrink:0;}
+.api-ign{font-weight:800;font-size:0.79rem;flex:1;}
+.api-reg{font-size:0.63rem;color:var(--muted2);font-weight:700;}
+.api-res{font-size:0.6rem;color:var(--red);font-weight:900;}
+.api-acts{display:flex;gap:0.28rem;margin-left:auto;}
+.amini{font-size:0.61rem;font-weight:800;padding:0.18rem 0.48rem;border-radius:6px;cursor:pointer;border:1.5px solid;transition:all 0.13s;background:none;font-family:'Nunito',sans-serif;}
+.amini.r{color:var(--red);border-color:rgba(239,68,68,0.28);}.amini.r:hover{background:rgba(239,68,68,0.1);}
+.amini.g{color:var(--green);border-color:rgba(74,222,128,0.28);}.amini.g:hover{background:rgba(74,222,128,0.08);}
+
+/* Admin Users Section */
+.admin-user-row{display:flex;align-items:center;gap:0.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:0.45rem 0.65rem;}
+.aur-disc{font-size:0.78rem;font-weight:800;flex:1;color:var(--disc2);}
+.aur-tag{font-size:0.6rem;color:var(--muted);font-weight:700;}
+.aur-acts{display:flex;gap:0.28rem;margin-left:auto;}
+.no-items{font-size:0.75rem;color:var(--muted);text-align:center;padding:0.75rem;font-weight:700;}
+
+.empty-state{text-align:center;padding:5rem 2rem;color:var(--muted);font-size:0.88rem;font-weight:700;}
+.loading-state{text-align:center;padding:5rem 2rem;color:var(--muted);}
+.spinner{width:26px;height:26px;border:2px solid var(--bg3);border-top-color:var(--disc2);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 1rem;}
+
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><path d="M6 22L11 8L14 14L17 8L22 22" stroke="#f5a623" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 17H19.5" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round" opacity="0.65"/></svg>
+    </div>
+    <div>
+      <div class="logo-text">A7S</div>
+      <div class="logo-sub">Tier Test</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Rankings
+    </a>
+    <a href="https://discord.gg/S92AFwTzTt" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Discord
+    </a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-pill pill-info" onclick="openInfoModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      Tier Info
+    </button>
+    <button class="nav-pill pill-admin" id="navAdminBtn" onclick="openAdminPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Admin Panel
+    </button>
+    <div class="nav-search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search player...">
+    </div>
+    <div id="authArea">
+      <button class="sign-btn" onclick="openLoginModal()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Sign in with Discord
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="tabs-card">
+    <div class="gm-tabs" id="gmTabs">
+      <button class="gm-tab active" data-gm="Overall"><span class="tab-em">🏆</span>Overall</button>
+      <button class="gm-tab" data-gm="Cpvp"><span class="tab-em">⚔️</span>Cpvp</button>
+      <button class="gm-tab" data-gm="Mace"><span class="tab-em">🔨</span>Mace</button>
+      <button class="gm-tab" data-gm="Sword"><span class="tab-em">🗡️</span>Sword</button>
+      <button class="gm-tab" data-gm="Diamond SMP"><span class="tab-em">💎</span>SMP</button>
+      <button class="gm-tab" data-gm="UHC"><span class="tab-em">❤️</span>UHC</button>
+      <button class="gm-tab" data-gm="NethOP"><span class="tab-em">🔮</span>NethOP</button>
+      <button class="gm-tab" data-gm="Pot"><span class="tab-em">🧪</span>Pot</button>
+      <button class="gm-tab" data-gm="Cart"><span class="tab-em">🛒</span>Cart</button>
+    </div>
+    <div class="tab-bar-bottom">
+      <div class="left" id="playerCount">Loading...</div>
+      <a href="https://discord.gg/S92AFwTzTt" target="_blank" class="disc-join">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Join Discord
+      </a>
+    </div>
+  </div>
+
+  <table class="lb-table">
+    <thead>
+      <tr>
+        <th style="width:64px;text-align:center">#</th>
+        <th>Player</th>
+        <th style="width:86px">Region</th>
+        <th class="right" style="width:380px">Tiers</th>
+      </tr>
+    </thead>
+    <tbody id="lbBody">
+      <tr><td colspan="4"><div class="loading-state"><div class="spinner"></div>Loading players...</div></td></tr>
+    </tbody>
+  </table>
+  <div id="emptyState" class="empty-state" style="display:none">No players found.</div>
+</div>
+
+<!-- PLAYER MODAL -->
+<div class="ov" id="overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-skin-wrap"><img class="modal-skin" id="mSkin" src="" alt=""></div>
+      <div class="modal-info">
+        <div class="modal-ign" id="mName"></div>
+        <div class="modal-sub" id="mSub"></div>
+      </div>
+      <button class="mc" onclick="closeOverlay()">✕</button>
+    </div>
+    <div class="modal-stat-grid">
+      <div class="msc"><div class="msc-icon">🏆</div><span class="msc-val cg" id="mPts">0</span><div class="msc-lbl">Points</div></div>
+      <div class="msc"><div class="msc-icon">📈</div><span class="msc-val cc" id="mPeakPts">0</span><div class="msc-lbl">Peak Points</div></div>
+      <div class="msc"><div class="msc-icon">⚔️</div><div class="mwl" id="mWL"><span class="w">0</span><span class="sep">/</span><span class="l">0</span></div><div class="msc-lbl">W/L</div></div>
+      <div class="msc"><div class="msc-icon">📊</div><span class="msc-val cb" id="mWinRate">N/A</span><div class="msc-lbl">Win Rate</div></div>
+      <div class="msc"><div class="msc-icon">🔥</div><span class="msc-val cgr" id="mStreak">0</span><div class="msc-lbl">Streak</div></div>
+      <div class="msc"><div class="msc-icon">⚡</div><span class="msc-val cp" id="mBestStreak">0</span><div class="msc-lbl">Best</div></div>
+    </div>
+    <div class="msec"><div class="stitle">Tiers</div><div class="mtg" id="mTiers"></div></div>
+    <div class="msec"><div class="stitle">Test History</div><div id="mHistory"></div></div>
+    <div class="madded" id="mAdded"></div>
+    <div class="modal-admin-bar" id="modalAdminBar">
+      <div class="stitle">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Admin Actions
+      </div>
+      <button class="apill red" id="restrictToggleBtn" onclick="quickToggleRestrict()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+        Restrict Player
+      </button>
+      <button class="apill blue" onclick="openAdminAndPrefill()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit in Panel
+      </button>
+      <button class="apill red" onclick="quickDeletePlayer()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+        Delete Player
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- INFO MODAL -->
+<div class="ov" id="infoOverlay">
+  <div class="info-modal">
+    <div class="imh">
+      <div class="imt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>A7S Tier Test — Point System</div>
+      <button class="mc" onclick="closeInfoModal()">✕</button>
+    </div>
+    <div class="imb">
+      <div class="tier-block">
+        <div class="tbt">🏆 High Tiers</div>
+        <div class="trow"><span class="trn ht">HT1</span><span class="tra">➔</span><span class="trp">60 Points</span></div>
+        <div class="trow"><span class="trn lt">LT1</span><span class="tra">➔</span><span class="trp">52 Points</span></div>
+        <div class="trow"><span class="trn ht">HT2</span><span class="tra">➔</span><span class="trp">44 Points</span></div>
+        <div class="trow"><span class="trn lt">LT2</span><span class="tra">➔</span><span class="trp">36 Points</span></div>
+      </div>
+      <div class="tier-block">
+        <div class="tbt">⚔️ Mid Tiers</div>
+        <div class="trow"><span class="trn ht">HT3</span><span class="tra">➔</span><span class="trp">28 Points</span></div>
+        <div class="trow"><span class="trn lt">LT3</span><span class="tra">➔</span><span class="trp">20 Points</span></div>
+        <div class="tbd">The starting point for new testers.</div>
+      </div>
+      <div class="tier-block">
+        <div class="tbt">🔰 Rookie</div>
+        <div class="trow"><span class="trn ht">HT4</span><span class="tra">➔</span><span class="trp">15 Points</span></div>
+        <div class="trow"><span class="trn lt">LT4</span><span class="tra">➔</span><span class="trp">10 Points</span></div>
+      </div>
+      <div class="tier-block">
+        <div class="tbt">📌 Entry Tiers</div>
+        <div class="trow"><span class="trn ht">HT5</span><span class="tra">➔</span><span class="trp">5 Points</span></div>
+        <div class="trow"><span class="trn lt">LT5</span><span class="tra">➔</span><span class="trp">2 Points</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="ov" id="loginOverlay">
+  <div class="login-modal">
+    <div class="lh">
+      <div class="lh-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--disc2)"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      </div>
+      <div class="ltitle">Sign in with Discord</div>
+      <div class="lsub">Connect your Discord account to access the leaderboard and view your stats.</div>
+    </div>
+    <div class="lb">
+      <div class="lerr" id="loginErr"></div>
+      <button class="ldbtn" onclick="startDiscordLogin()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Continue with Discord
+      </button>
+    </div>
+    <div class="lnote">Your Discord account must be linked to a player in the system. Admins can add authorized Discord accounts in the Admin Panel.</div>
+    <div class="lcancel" onclick="closeLoginModal()">Cancel</div>
+  </div>
+</div>
+
+<!-- DISCORD CONFIRM MODAL (simulates OAuth) -->
+<div class="ov" id="discConfirmOverlay">
+  <div class="disc-confirm">
+    <div class="dc-head">
+      <div style="font-size:2rem;margin-bottom:0.5rem">🔐</div>
+      <div class="dc-title">Connect your Discord</div>
+      <div class="dc-sub">Enter your Discord username and linked Minecraft IGN to verify your identity.</div>
+    </div>
+    <div class="dc-body">
+      <div class="dc-err" id="dcErr"></div>
+      <div class="dc-field">
+        <label>Discord Username</label>
+        <input type="text" id="dcDiscord" placeholder="e.g. sharkyy" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="dc-field">
+        <label>Your Minecraft IGN</label>
+        <input type="text" id="dcIGN" placeholder="e.g. Notch" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="dc-note"><b>Why both?</b> We verify your Discord username matches what's on our authorized list, and your IGN must match a player registered in the system.</div>
+      <button class="dc-submit" onclick="attemptDiscordLogin()">Verify & Sign In</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="ov" id="adminOverlay">
+  <div class="admin-modal">
+    <div class="adh">
+      <div class="adt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Admin Panel
+        <span id="adminLoggedAs"></span>
+      </div>
+      <button class="mc" onclick="closeAdminPanel()">✕</button>
+    </div>
+    <div class="adbody">
+
+      <div class="adsec">
+        <div class="adst">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515"/><circle cx="12" cy="12" r="10"/></svg>
+          Authorized Discord Admins
+        </div>
+        <div style="display:flex;gap:0.5rem;margin-bottom:0.65rem;flex-wrap:wrap;">
+          <div class="af" style="flex:1;min-width:150px"><label>Discord Username</label><input type="text" id="aAdminDiscord" placeholder="e.g. sharkyy"></div>
+          <div class="af" style="flex:1;min-width:130px"><label>Linked IGN</label><input type="text" id="aAdminIGN" placeholder="e.g. sharky03493"></div>
+        </div>
+        <button class="abtn disc" onclick="adminAddAdminUser()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Add Admin User
+        </button>
+        <div class="afb" id="fbAdminUser"></div>
+        <div style="margin-top:0.65rem;display:flex;flex-direction:column;gap:0.3rem;max-height:160px;overflow-y:auto;" id="adminUserList"></div>
+      </div>
+
+      <div class="adsec">
+        <div class="adst">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          Restrict / Unrestrict Player
+        </div>
+        <div class="af" style="margin-bottom:0.6rem"><label>Player IGN</label><input type="text" id="aRestrictIGN" placeholder="e.g. Notch"></div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+          <button class="abtn red" onclick="adminRestrict(true)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            Restrict
+          </button>
+          <button class="abtn green" onclick="adminRestrict(false)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Unrestrict
+          </button>
+        </div>
+        <div class="afb" id="fbRestrict"></div>
+      </div>
+
+      <div class="adsec">
+        <div class="adst">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Assign / Remove Tier
+        </div>
+        <div class="ar3" style="margin-bottom:0.6rem">
+          <div class="af"><label>IGN</label><input type="text" id="aTierIGN" placeholder="Player..."></div>
+          <div class="af"><label>Gamemode</label>
+            <select id="aTierGM">
+              <option value="Cpvp">Cpvp</option><option value="Mace">Mace</option>
+              <option value="Sword">Sword</option><option value="Diamond SMP">Diamond SMP</option>
+              <option value="UHC">UHC</option><option value="NethOP">NethOP</option>
+              <option value="Pot">Pot</option><option value="Cart">Cart</option>
+            </select>
+          </div>
+          <div class="af"><label>Tier</label>
+            <select id="aTierVal">
+              <option value="Ht1">HT1</option><option value="Lt1">LT1</option>
+              <option value="Ht2">HT2</option><option value="Lt2">LT2</option>
+              <option value="Ht3">HT3</option><option value="Lt3">LT3</option>
+              <option value="Ht4">HT4</option><option value="Lt4">LT4</option>
+              <option value="Ht5">HT5</option><option value="Lt5">LT5</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+          <button class="abtn gold" onclick="adminAssignTier()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Assign Tier
+          </button>
+          <button class="abtn red" onclick="adminRemoveTier()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Remove Tier
+          </button>
+        </div>
+        <div class="afb" id="fbTier"></div>
+      </div>
+
+      <div class="adsec">
+        <div class="adst">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Add Player
+        </div>
+        <div class="ar2" style="margin-bottom:0.6rem">
+          <div class="af"><label>IGN</label><input type="text" id="aAddIGN" placeholder="Player username..."></div>
+          <div class="af"><label>Region</label>
+            <select id="aAddRegion">
+              <option value="NA">NA</option><option value="EU">EU</option>
+              <option value="AS">AS</option><option value="SA">SA</option>
+            </select>
+          </div>
+        </div>
+        <button class="abtn green" onclick="adminAddPlayer()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Add Player
+        </button>
+        <div class="afb" id="fbAdd"></div>
+      </div>
+
+      <div class="adsec">
+        <div class="adst" style="color:var(--red)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          Delete Player
+        </div>
+        <div class="af" style="margin-bottom:0.6rem"><label>IGN</label><input type="text" id="aDeleteIGN" placeholder="Player to delete..."></div>
+        <button class="abtn red" onclick="adminDeletePlayer()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          Delete Player
+        </button>
+        <div class="afb" id="fbDelete"></div>
+      </div>
+
+      <div class="adsec">
+        <div class="adst">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          All Players
+        </div>
+        <div class="apl" id="adminPlayerList"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://a7s-apis-production.up.railway.app';
+const TIER_PTS = {Ht1:60,Lt1:52,Ht2:44,Lt2:36,Ht3:28,Lt3:20,Ht4:15,Lt4:10,Ht5:5,Lt5:2};
+const GM_EMOJI = {Cpvp:'⚔️',Mace:'🔨',Sword:'🗡️','Diamond SMP':'💎',UHC:'❤️',NethOP:'🔮',Pot:'🧪',Cart:'🛒'};
+const GM_CLS   = {Cpvp:'tc-cpvp',Mace:'tc-mace',Sword:'tc-sword','Diamond SMP':'tc-smp',UHC:'tc-uhc',NethOP:'tc-nethop',Pot:'tc-pot',Cart:'tc-cart'};
+const GM_ORDER = ['Cpvp','Mace','Sword','Diamond SMP','UHC','NethOP','Pot','Cart'];
+
+let allPlayers = [], activeGM = 'Overall', searchQ = '';
+let currentUser = null, currentProfile = null;
+
+let adminUsers = JSON.parse(localStorage.getItem('a7s_admins') || 'null') || [
+  {discord: 'sharkyy', ign: 'sharky03493'}
+];
+function saveAdmins() { localStorage.setItem('a7s_admins', JSON.stringify(adminUsers)); }
+
+function isAdminDiscord(discord, ign) {
+  return adminUsers.some(u =>
+    u.discord.toLowerCase() === discord.toLowerCase() &&
+    u.ign.toLowerCase() === ign.toLowerCase()
+  );
+}
+
+function rankLabel(p){if(p>=400)return'Combat Grandmaster';if(p>=250)return'Combat Master';if(p>=100)return'Combat Ace';if(p>=50)return'Combat Specialist';if(p>=20)return'Combat Cadet';if(p>=10)return'Combat Novice';return'Rookie';}
+function rankIcon(p){if(p>=400)return'🥇';if(p>=250)return'🏆';if(p>=100)return'💠';if(p>=50)return'🔷';if(p>=20)return'🔵';if(p>=10)return'⚪';return'◆';}
+function tbadge(t){if(!t)return'';return`<span class="tbadge ${t.startsWith('H')?'tb-ht':'tb-lt'}">${t}</span>`;}
+function regionBadge(r){const c={NA:'r-na',EU:'r-eu',AS:'r-as',SA:'r-sa'}[r]||'r-na';return`<span class="region-badge ${c}">${r||'NA'}</span>`;}
+function dTier(t){return t?t.replace('Ht','HT').replace('Lt','LT'):t;}
+function recalc(p){p.totalPoints=Object.values(p.tiers||{}).reduce((s,t)=>s+(TIER_PTS[t]||0),0);}
+
+function tierChips(p) {
+  return GM_ORDER.map(gm => {
+    const t = p.tiers?.[gm], cls = GM_CLS[gm]||'', em = GM_EMOJI[gm]||'⚔️';
+    const raw = t ? t.replace(/[A-Za-z]/g,'') : '';
+    const isHt = t && t.startsWith('H');
+    if (!t) return `<div class="tier-chip ${cls} empty"><span class="te">${em}</span></div>`;
+    return `<div class="tier-chip ${cls}"><span class="te">${em}</span><span class="${isHt?'ht':'lt'}">${isHt?'HT':'LT'}${raw}</span></div>`;
+  }).join('');
+}
+
+async function fetchPlayers() {
+  try {
+    const r = await fetch(`${API_URL}/api/players`);
+    allPlayers = await r.json();
+    render();
+  } catch {
+    document.getElementById('lbBody').innerHTML = `<tr><td colspan="4"><div class="empty-state">⚠️ Could not connect to API.</div></td></tr>`;
+  }
+}
+
+function getFiltered() {
+  return allPlayers
+    .filter(p => {
+      const ok = activeGM === 'Overall' || p.tiers?.[activeGM];
+      return ok && p.ign.toLowerCase().includes(searchQ.toLowerCase());
+    })
+    .sort((a,b) => activeGM === 'Overall'
+      ? b.totalPoints - a.totalPoints
+      : (TIER_PTS[b.tiers?.[activeGM]]||0) - (TIER_PTS[a.tiers?.[activeGM]]||0)
+    )
+    .slice(0,100);
+}
+
+function render() {
+  const f = getFiltered();
+  const body = document.getElementById('lbBody');
+  const empty = document.getElementById('emptyState');
+  const pc = document.getElementById('playerCount');
+  pc.innerHTML = `<span>${f.length}</span> players ranked`;
+  if (!f.length) { body.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  body.innerHTML = f.map((p, i) => {
+    const rank = i+1;
+    const rc = rank===1?'rank-1-row':rank===2?'rank-2-row':rank===3?'rank-3-row':'';
+    const pts = activeGM === 'Overall' ? p.totalPoints : (TIER_PTS[p.tiers?.[activeGM]]||0);
+    const skin = rank <= 3
+      ? `<div class="skin-lg"><img class="skin-body" src="https://mc-heads.net/body/${p.ign}" alt="" onerror="this.src='https://mc-heads.net/avatar/${p.ign}/44'"></div>`
+      : `<div class="skin-sm"><img class="skin-av" src="https://mc-heads.net/avatar/${p.ign}/44" alt="" onerror="this.style.opacity='0.3'"></div>`;
+    return `<tr class="${rc}" style="animation-delay:${i*0.03}s" onclick="openProfile('${p.ign}')">
+      <td class="rank-cell"><div class="rank-num">${rank}.</div></td>
+      <td class="player-td"><div class="player-cell">${skin}<div class="player-info">
+        <div class="player-ign">${p.ign}${p.restricted?'<span class="restricted-badge">⊘ RESTRICTED</span>':''}</div>
+        <div class="player-pts">${rankIcon(pts)} ${rankLabel(pts)} · ${pts} pts</div>
+      </div></div></td>
+      <td class="region-td">${regionBadge(p.region)}</td>
+      <td class="tiers-td"><div class="tier-icons">${tierChips(p)}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+function openProfile(ign) {
+  const p = allPlayers.find(x => x.ign.toLowerCase() === ign.toLowerCase());
+  if (!p) return;
+  currentProfile = p;
+  const pts = p.totalPoints || 0;
+  document.getElementById('mSkin').src = `https://mc-heads.net/body/${p.ign}`;
+  document.getElementById('mName').innerHTML = p.ign + (p.restricted ? '<span class="restricted-badge" style="font-size:0.62rem">⊘ RESTRICTED</span>' : '');
+  document.getElementById('mSub').innerHTML = `${regionBadge(p.region)}<span style="color:var(--muted)">•</span>${rankIcon(pts)} ${rankLabel(pts)}`;
+  document.getElementById('mPts').textContent = pts;
+  document.getElementById('mPeakPts').textContent = p.peakPoints || pts;
+  const w = p.wins||0, l = p.losses||0;
+  document.getElementById('mWL').innerHTML = `<span class="w">${w}</span><span class="sep">/</span><span class="l">${l}</span>`;
+  document.getElementById('mWinRate').textContent = w+l>0 ? Math.round(w/(w+l)*100)+'%' : 'N/A';
+  document.getElementById('mStreak').textContent = p.winStreak||0;
+  document.getElementById('mBestStreak').textContent = p.bestStreak||0;
+  document.getElementById('mTiers').innerHTML = GM_ORDER.filter(gm => p.tiers?.[gm]).map(gm => {
+    const t = p.tiers[gm], isHt = t.startsWith('H');
+    return `<div class="mtc"><div class="mtc-icon">${GM_EMOJI[gm]}</div><div class="mtc-gm">${gm}</div><div class="mtc-tier ${isHt?'ht':'lt'}">${dTier(t)}</div></div>`;
+  }).join('') || '<span style="color:var(--muted);font-size:0.8rem;font-weight:700">No tiers yet</span>';
+  const hist = (p.history||[]).slice(0,15);
+  document.getElementById('mHistory').innerHTML = hist.length
+    ? hist.map(h => `<div class="hr"><span class="hr-gm">${GM_EMOJI[h.gamemode]||'⚔️'} ${h.gamemode}</span>${tbadge(h.tier)}<span class="hr-tester">by ${h.tester}</span><span class="hr-date">${h.date ? new Date(h.date).toLocaleDateString() : ''}</span></div>`).join('')
+    : '<span style="color:var(--muted);font-size:0.8rem;font-weight:700">No history yet.</span>';
+  const ad = p.addedDate ? new Date(p.addedDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : null;
+  document.getElementById('mAdded').innerHTML = ad
+    ? `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Added ${ad}` : '';
+  const bar = document.getElementById('modalAdminBar');
+  if (currentUser?.isAdmin) {
+    bar.classList.add('vis');
+    const rb = document.getElementById('restrictToggleBtn');
+    rb.className = p.restricted ? 'apill green' : 'apill red';
+    rb.innerHTML = p.restricted
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Unrestrict`
+      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Restrict`;
+  } else { bar.classList.remove('vis'); }
+  document.getElementById('overlay').classList.add('open');
+}
+function closeOverlay() { document.getElementById('overlay').classList.remove('open'); }
+function quickToggleRestrict() { if (!currentProfile||!currentUser?.isAdmin) return; currentProfile.restricted=!currentProfile.restricted; openProfile(currentProfile.ign); render(); }
+function quickDeletePlayer() { if (!currentProfile||!currentUser?.isAdmin) return; if (!confirm(`Delete ${currentProfile.ign}?`)) return; allPlayers=allPlayers.filter(p=>p.ign!==currentProfile.ign); closeOverlay(); render(); }
+function openAdminAndPrefill() { const ign=currentProfile?.ign; closeOverlay(); openAdminPanel(); if(ign){['aRestrictIGN','aTierIGN','aDeleteIGN'].forEach(id=>document.getElementById(id).value=ign);} }
+
+function openLoginModal() { document.getElementById('loginOverlay').classList.add('open'); }
+function closeLoginModal() { document.getElementById('loginOverlay').classList.remove('open'); document.getElementById('loginErr').style.display='none'; }
+function startDiscordLogin() { closeLoginModal(); document.getElementById('dcErr').style.display='none'; document.getElementById('dcDiscord').value=''; document.getElementById('dcIGN').value=''; document.getElementById('discConfirmOverlay').classList.add('open'); }
+
+function attemptDiscordLogin() {
+  const discord = document.getElementById('dcDiscord').value.trim();
+  const ign = document.getElementById('dcIGN').value.trim();
+  const err = document.getElementById('dcErr');
+  if (!discord || !ign) { err.textContent='Please fill in both fields.'; err.style.display='block'; return; }
+  const playerExists = allPlayers.some(p => p.ign.toLowerCase() === ign.toLowerCase());
+  if (!playerExists) { err.textContent='That IGN is not registered in the system. Ask an admin to add you.'; err.style.display='block'; return; }
+  const isAdmin = isAdminDiscord(discord, ign);
+  currentUser = {discord, ign, isAdmin};
+  document.getElementById('discConfirmOverlay').classList.remove('open');
+  onLoggedIn();
+}
+
+function onLoggedIn() {
+  document.getElementById('authArea').innerHTML = `<div class="user-chip" onclick="logout()" title="Click to sign out">
+    <img class="user-avatar" src="https://mc-heads.net/avatar/${currentUser.ign}/24" onerror="this.style.opacity=0.3">
+    <span>${currentUser.ign}</span>
+    ${currentUser.isAdmin ? '<span class="tag-admin">ADMIN</span>' : ''}
+  </div>`;
+  if (currentUser.isAdmin) {
+    document.getElementById('navAdminBtn').classList.add('vis');
+    document.getElementById('adminLoggedAs').textContent = `— ${currentUser.ign}`;
+  }
+}
+
+function logout() {
+  currentUser = null;
+  document.getElementById('authArea').innerHTML = `<button class="sign-btn" onclick="openLoginModal()"><svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>Sign in with Discord</button>`;
+  document.getElementById('navAdminBtn').classList.remove('vis');
+}
+
+function openAdminPanel() { document.getElementById('adminOverlay').classList.add('open'); renderAdminList(); renderAdminUserList(); }
+function closeAdminPanel() { document.getElementById('adminOverlay').classList.remove('open'); }
+
+function showFb(id, msg, ok=true) {
+  const el = document.getElementById(id);
+  el.textContent = (ok?'✓ ':'✗ ') + msg;
+  el.className = 'afb ' + (ok?'ok':'err');
+  el.style.display = 'block';
+  setTimeout(() => el.style.display='none', 3000);
+}
+
+function adminAddAdminUser() {
+  const discord = document.getElementById('aAdminDiscord').value.trim();
+  const ign = document.getElementById('aAdminIGN').value.trim();
+  if (!discord||!ign) { showFb('fbAdminUser','Fill in both fields.',false); return; }
+  if (adminUsers.some(u=>u.discord.toLowerCase()===discord.toLowerCase())) { showFb('fbAdminUser','That Discord is already an admin.',false); return; }
+  adminUsers.push({discord,ign});
+  saveAdmins();
+  document.getElementById('aAdminDiscord').value='';
+  document.getElementById('aAdminIGN').value='';
+  renderAdminUserList();
+  showFb('fbAdminUser',`${discord} added as admin.`);
+}
+function adminRemoveAdminUser(discord) {
+  adminUsers = adminUsers.filter(u=>u.discord.toLowerCase()!==discord.toLowerCase());
+  saveAdmins();
+  renderAdminUserList();
+}
+function renderAdminUserList() {
+  const el = document.getElementById('adminUserList');
+  if (!el) return;
+  if (!adminUsers.length) { el.innerHTML='<div class="no-items">No admin users yet.</div>'; return; }
+  el.innerHTML = adminUsers.map(u=>`<div class="admin-user-row">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--disc2);flex-shrink:0"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+    <span class="aur-disc">${u.discord}</span>
+    <span class="aur-tag">IGN: ${u.ign}</span>
+    <div class="aur-acts"><button class="amini r" onclick="adminRemoveAdminUser('${u.discord}')">Remove</button></div>
+  </div>`).join('');
+}
+
+function adminRestrict(restrict) {
+  const ign = document.getElementById('aRestrictIGN').value.trim();
+  const p = allPlayers.find(x=>x.ign.toLowerCase()===ign.toLowerCase());
+  if (!p) { showFb('fbRestrict','Player not found.',false); return; }
+  p.restricted = restrict; render(); renderAdminList();
+  showFb('fbRestrict', restrict?`${ign} restricted.`:`${ign} unrestricted.`);
+}
+function adminAssignTier() {
+  const ign=document.getElementById('aTierIGN').value.trim(), gm=document.getElementById('aTierGM').value, tier=document.getElementById('aTierVal').value;
+  const p=allPlayers.find(x=>x.ign.toLowerCase()===ign.toLowerCase());
+  if (!p) { showFb('fbTier','Player not found.',false); return; }
+  if (!p.tiers) p.tiers={}; p.tiers[gm]=tier; recalc(p); render(); renderAdminList();
+  showFb('fbTier',`Assigned ${dTier(tier)} in ${gm} to ${ign}.`);
+}
+function adminRemoveTier() {
+  const ign=document.getElementById('aTierIGN').value.trim(), gm=document.getElementById('aTierGM').value;
+  const p=allPlayers.find(x=>x.ign.toLowerCase()===ign.toLowerCase());
+  if (!p) { showFb('fbTier','Player not found.',false); return; }
+  if (!p.tiers?.[gm]) { showFb('fbTier',`No ${gm} tier to remove.`,false); return; }
+  delete p.tiers[gm]; recalc(p); render();
+  showFb('fbTier',`Removed ${gm} tier from ${ign}.`);
+}
+function adminAddPlayer() {
+  const ign=document.getElementById('aAddIGN').value.trim(), region=document.getElementById('aAddRegion').value;
+  if (!ign) { showFb('fbAdd','Enter a username.',false); return; }
+  if (allPlayers.find(p=>p.ign.toLowerCase()===ign.toLowerCase())) { showFb('fbAdd','Player already exists.',false); return; }
+  allPlayers.push({ign,region,totalPoints:0,tiers:{},history:[],restricted:false,addedDate:new Date().toISOString()});
+  document.getElementById('aAddIGN').value='';
+  render(); renderAdminList();
+  showFb('fbAdd',`Added ${ign} (${region}).`);
+}
+function adminDeletePlayer() {
+  const ign=document.getElementById('aDeleteIGN').value.trim();
+  if (!allPlayers.find(p=>p.ign.toLowerCase()===ign.toLowerCase())) { showFb('fbDelete','Player not found.',false); return; }
+  if (!confirm(`Delete ${ign}?`)) return;
+  allPlayers=allPlayers.filter(p=>p.ign.toLowerCase()!==ign.toLowerCase());
+  document.getElementById('aDeleteIGN').value='';
+  render(); renderAdminList();
+  showFb('fbDelete',`Deleted ${ign}.`);
+}
+function renderAdminList() {
+  const el = document.getElementById('adminPlayerList');
+  if (!el) return;
+  const s = [...allPlayers].sort((a,b)=>a.ign.localeCompare(b.ign));
+  el.innerHTML = s.map(p=>`<div class="api">
+    <img class="api-av" src="https://mc-heads.net/avatar/${p.ign}/24" onerror="this.style.opacity=0.3">
+    <span class="api-ign">${p.ign}</span>
+    <span class="api-reg">${p.region||'NA'}</span>
+    ${p.restricted?'<span class="api-res">RESTRICTED</span>':''}
+    <div class="api-acts"><button class="amini ${p.restricted?'g':'r'}" onclick="qRestrict('${p.ign}')">${p.restricted?'Unrestrict':'Restrict'}</button></div>
+  </div>`).join('');
+}
+function qRestrict(ign) { const p=allPlayers.find(x=>x.ign===ign); if(!p)return; p.restricted=!p.restricted; render(); renderAdminList(); }
+
+function openInfoModal() { document.getElementById('infoOverlay').classList.add('open'); }
+function closeInfoModal() { document.getElementById('infoOverlay').classList.remove('open'); }
+
+document.getElementById('overlay').onclick=e=>{if(e.target===document.getElementById('overlay'))closeOverlay();};
+document.getElementById('infoOverlay').onclick=e=>{if(e.target===document.getElementById('infoOverlay'))closeInfoModal();};
+document.getElementById('loginOverlay').onclick=e=>{if(e.target===document.getElementById('loginOverlay'))closeLoginModal();};
+document.getElementById('discConfirmOverlay').onclick=e=>{if(e.target===document.getElementById('discConfirmOverlay'))document.getElementById('discConfirmOverlay').classList.remove('open');};
+document.getElementById('adminOverlay').onclick=e=>{if(e.target===document.getElementById('adminOverlay'))closeAdminPanel();};
+document.getElementById('gmTabs').onclick=e=>{
+  const b=e.target.closest('.gm-tab');
+  if(!b)return;
+  document.querySelectorAll('.gm-tab').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  activeGM=b.dataset.gm;
+  render();
+};
+document.getElementById('searchInput').oninput=e=>{searchQ=e.target.value;render();};
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('searchInput').focus();}
+  if(e.key==='Escape'){
+    closeOverlay();closeInfoModal();closeLoginModal();closeAdminPanel();
+    document.getElementById('discConfirmOverlay').classList.remove('open');
+  }
+});
+document.getElementById('dcIGN').addEventListener('keydown',e=>{if(e.key==='Enter')attemptDiscordLogin();});
+
+fetchPlayers();
+setInterval(fetchPlayers,30000);
+</script>
+</body>
+</html>
